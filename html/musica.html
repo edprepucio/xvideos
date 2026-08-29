@@ -51,12 +51,11 @@
       }
 
       .contenedor_fotos {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
+        display: grid;
+        grid-template-columns: repeat(5, 170px);
         justify-content: center;
         gap: 20px;
-        margin-top: 25px;
+        margin-top: 25px auto;
       }
 
       .caja {
@@ -73,12 +72,6 @@
         box-shadow: 3px 3px 0px #000000;
       }
 
-      .caja:hover {
-        transform: scale(1.03);
-        transition: transform 0.2s ease;
-      }
-
-      /* Marco cuadrado para discos */
       .marco {
         border: 2px solid #000000;
         width: 130px;
@@ -113,7 +106,60 @@
   <body>
     <a href="index.html" class="boton-volver">← VOVLER XD</a>
 
-    <h1>ÁLBUMES Y MÚSICA</h1>
+    <h1>ALBUMES Y MUSIKITA</h1>
     <p>la musica es mi mayor pasion i amor</p>
+
+    <div class="contenedor_fotos">
+      <div class="caja">
+  <div class="marco">
+    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e0/04/eb/e004eb2b-754f-4a76-9ecc-87d4eea2a327/cover.jpg/500x500bb.jpg" alt="Salad Days" />
+  </div>
+  <h3>Salad Days</h3>
+  <span>Mac DeMarco</span>
+</div>
+
+<div class="caja">
+  <div class="marco">
+    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a9/ca/9c/a9ca9c83-4b8f-090e-0bb8-5e6b1e5eebfd/cover.jpg/500x500bb.jpg" alt="2" />
+  </div>
+  <h3>2</h3>
+  <span>Mac DeMarco</span>
+</div>
+
+<div class="caja">
+  <div class="marco">
+    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/82/a8/aa/82a8aa9e-9d14-b879-2b6b-36726f19c1dd/4066004663746_3000.jpg/500x500bb.jpg" alt="Everywhere at the End of Time (Stage 1)" />
+  </div>
+  <h3>Everywhere at the End of Time (Stage 1)</h3>
+  <span>The Caretaker</span>
+</div>
+
+<div class="caja">
+  <div class="marco">
+    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/b6/7b/65/b67b6534-96f7-573c-4a8d-26e90bae0cfd/4066004663753_3000.jpg/500x500bb.jpg" alt="Everywhere at the End of Time (Stage 2)" />
+  </div>
+  <h3>Everywhere at the End of Time (Stage 2)</h3>
+  <span>The Caretaker</span>
+</div>
+
+<div class="caja">
+  <div class="marco">
+    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/8f/17/a2/8f17a24a-e071-d99d-b1fd-f4a2abaab4ee/4066004663760_3000.jpg/500x500bb.jpg" alt="Everywhere at the End of Time (Stage 3)" />
+  </div>
+  <h3>Everywhere at the End of Time (Stage 3)</h3>
+  <span>The Caretaker</span>
+</div>
+
+
+
+<div class="caja">
+  <div class="marco">
+    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/ba/d2/6b/bad26b5e-d37e-d83b-7fba-bf09c35fd734/4066004677576_3000.jpg/500x500bb.jpg" alt="An empty bliss beyond this World" />
+  </div>
+  <h3>An empty bliss beyond this World</h3>
+  <span>The Caretaker</span>
+</div>
+
+
   </body>
 </html>
