@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Buscar Música</title>
+    <link
+      rel="icon"
+      href="https://static.wikia.nocookie.net/ficcion-sin-limites/images/c/c3/2hu.png/revision/latest?cb=20210114081823&path-prefix=es"
+      type="image/x-icon"
+    />
+    <style>
+      body {
+        background-color: #dadeb5;
+        font-family: "MS Gothic", "Courier New", monospace;
+        font-size: 13px;
+        font-weight: bold;
+        text-align: center;
+        padding: 30px;
+        color: #000;
+      }
+
+      h1 {
+        font-size: 22px;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+
+      .buscador {
+        margin: 20px auto;
+      }
+
+      input, button {
+        font-family: inherit;
+        font-weight: bold;
+        padding: 8px 12px;
+        border: 2px solid #000;
+      }
+
+      button {
+        background-color: #fff;
+        cursor: pointer;
+        box-shadow: 2px 2px 0px #000;
+      }
+
+      button:hover {
+        background-color: #f0f0f0;
+      }
+
+      .resultados {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 30px;
+      }
+
+      .tarjeta-resultado {
+        background: #fff;
+        border: 2px solid #000;
+        padding: 10px;
+        width: 150px;
+        box-shadow: 3px 3px 0px #000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* Portada cuadrada de disco */
+      .tarjeta-resultado img {
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border: 1px solid #000;
+        margin-bottom: 8px;
+      }
+
+      .tarjeta-resultado h4 {
+        margin: 4px 0 2px 0;
+        font-size: 12px;
+      }
+
+      .tarjeta-resultado span {
+        font-size: 11px;
+        font-weight: normal;
+        margin-bottom: 8px;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>PANEL DE MÚSICA</h1>
+    <p>Busca álbumes o canciones en la base de datos</p>
+
+    <div class="buscador">
+      <input type="text" id="input-busqueda" placeholder="Ej: artista, álbum o tema..." />
+      <button onclick="buscarMusica()">Buscar</button>
+    </div>
+
+    <!-- Contenedor donde se insertan los álbumes encontrados -->
+    <div id="contenedor-resultados" class="resultados"></div>
+
+    <script>
+      async function buscarMusica() {
+        const query = document.getElementById("input-busqueda").value.trim();
+        const contenedor = document.getElementById("contenedor-resultados");
+
+        if (!query) return;
+
+        contenedor.innerHTML = "<p>Buscando en la base de datos...</p>";
+
+        try {
+          // Consulta directa a la API de iTunes
+          const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=album&limit=8`;
+          const respuesta = await fetch(url);
+          const datos = await respuesta.json();
+
+          contenedor.innerHTML = "";
+
+          if (!datos.results || datos.results.length === 0) {
+            contenedor.innerHTML = "<p>No se encontraron resultados.</p>";
+            return;
+          }
+
+          datos.results.forEach(item => {
+            const album = item.collectionName || "Sin título";
+            const artista = item.artistName || "Desconocido";
+            // Convierte la imagen miniatura a alta calidad 500x500
+            const portada = item.artworkUrl100 
+              ? item.artworkUrl100.replace("100x100bb", "500x500bb") 
+              : "https://via.placeholder.com/130";
+
+            const card = document.createElement("div");
+            card.className = "tarjeta-resultado";
+            card.innerHTML = `
+              <img src="${portada}" alt="${album}" />
+              <h4>${album}</h4>
+              <span>${artista}</span>
+              <button onclick="copiarHTMLMusica('${portada}', '${album.replace(/'/g, "\\'")}', '${artista.replace(/'/g, "\\'")}')">Copiar HTML</button>
+            `;
+            contenedor.appendChild(card);
+          });
+        } catch (error) {
+          console.error(error);
+          contenedor.innerHTML = "<p>Error al conectar con el servidor.</p>";
+        }
+      }
+
+      function copiarHTMLMusica(portadaUrl, tituloAlbum, nombreArtista) {
+        const codigo = `<div class="caja">\n  <div class="marco">\n    <img src="${portadaUrl}" alt="${tituloAlbum}" />\n  </div>\n  <h3>${tituloAlbum}</h3>\n  <span>${nombreArtista}</span>\n</div>`;
+        navigator.clipboard.writeText(codigo);
+        alert("¡Copiado! Pégalo dentro del archivo musica.html");
+      }
+    </script>
+  </body>
+</html>

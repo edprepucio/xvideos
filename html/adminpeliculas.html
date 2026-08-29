@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Buscar Películas</title>
+    <style>
+      body {
+        background-color: #dadeb5;
+        font-family: "MS Gothic", "Courier New", monospace;
+        font-size: 13px;
+        font-weight: bold;
+        text-align: center;
+        padding: 30px;
+        color: #000;
+      }
+
+      .buscador {
+        margin: 20px auto;
+      }
+
+      input, button {
+        font-family: inherit;
+        font-weight: bold;
+        padding: 8px 12px;
+        border: 2px solid #000;
+      }
+
+      button {
+        background-color: #fff;
+        cursor: pointer;
+        box-shadow: 2px 2px 0px #000;
+      }
+
+      button:hover {
+        background-color: #f0f0f0;
+      }
+
+      /* Contenedor de los resultados */
+      .resultados {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 30px;
+      }
+
+      .tarjeta-resultado {
+        background: #fff;
+        border: 2px solid #000;
+        padding: 10px;
+        width: 150px;
+        box-shadow: 3px 3px 0px #000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .tarjeta-resultado img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border: 1px solid #000;
+        margin-bottom: 8px;
+      }
+
+      .tarjeta-resultado h4 {
+        margin: 4px 0 8px 0;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>PANEL DE ADMINISTRACIÓN</h1>
+    <p>Busca películas o series para agregarlas a tu web</p>
+
+    <div class="buscador">
+      <input type="text" id="input-busqueda" placeholder="Nombre de la película..." />
+      <button onclick="buscarPelicula()">Buscar</button>
+    </div>
+
+    <!-- Aquí aparecerán los pósters -->
+    <div id="contenedor-resultados" class="resultados"></div>
+
+    <script>
+      // AQUÍ ESTÁ PUESTA TU CLAVE DE TMDB:
+      const TMDB_API_KEY = "0e7bc60dff002ac531e67be7f9bbdb48";
+
+      async function buscarPelicula() {
+        const query = document.getElementById("input-busqueda").value.trim();
+        const contenedor = document.getElementById("contenedor-resultados");
+
+        if (!query) return;
+
+        contenedor.innerHTML = "<p>Buscando en TMDb...</p>";
+
+        try {
+          const url = `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&language=es-ES&query=${encodeURIComponent(query)}`;
+          const respuesta = await fetch(url);
+          const datos = await respuesta.json();
+
+          contenedor.innerHTML = "";
+
+          if (datos.results.length === 0) {
+            contenedor.innerHTML = "<p>No se encontraron resultados.</p>";
+            return;
+          }
+
+          datos.results.slice(0, 6).forEach(item => {
+            const titulo = item.title || item.name;
+            const poster = item.poster_path 
+              ? `https://image.tmdb.org/t/p/w500${item.poster_path}` 
+              : "https://via.placeholder.com/150x200";
+
+            const card = document.createElement("div");
+            card.className = "tarjeta-resultado";
+            card.innerHTML = `
+              <img src="${poster}" alt="${titulo}" />
+              <h4>${titulo}</h4>
+              <button onclick="copiarHTML('${poster}', '${titulo}')">Copiar HTML</button>
+            `;
+            contenedor.appendChild(card);
+          });
+        } catch (error) {
+          console.error(error);
+          contenedor.innerHTML = "<p>Error al conectar con la API.</p>";
+        }
+      }
+
+      function copiarHTML(posterUrl, tituloPeli) {
+        const codigo = `<a href="#" class="caja">\n  <div class="marco">\n    <img src="${posterUrl}" alt="${tituloPeli}" />\n  </div>\n  <h3>${tituloPeli}</h3>\n</a>`;
+        navigator.clipboard.writeText(codigo);
+        alert("¡Copiado! Pégalo dentro de tu archivo peliculas.html");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Buscar Videojuegos</title>
+    <link
+      rel="icon"
+      href="https://static.wikia.nocookie.net/ficcion-sin-limites/images/c/c3/2hu.png/revision/latest?cb=20210114081823&path-prefix=es"
+      type="image/x-icon"
+    />
+    <style>
+      body {
+        background-color: #dadeb5;
+        font-family: "MS Gothic", "Courier New", monospace;
+        font-size: 13px;
+        font-weight: bold;
+        text-align: center;
+        padding: 30px;
+        color: #000;
+      }
+
+      h1 {
+        font-size: 22px;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+
+      .buscador {
+        margin: 20px auto;
+      }
+
+      input, button {
+        font-family: inherit;
+        font-weight: bold;
+        padding: 8px 12px;
+        border: 2px solid #000;
+      }
+
+      button {
+        background-color: #fff;
+        cursor: pointer;
+        box-shadow: 2px 2px 0px #000;
+      }
+
+      button:hover {
+        background-color: #f0f0f0;
+      }
+
+      .resultados {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 30px;
+      }
+
+      .tarjeta-resultado {
+        background: #fff;
+        border: 2px solid #000;
+        padding: 10px;
+        width: 150px;
+        box-shadow: 3px 3px 0px #000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .tarjeta-resultado img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border: 1px solid #000;
+        margin-bottom: 8px;
+      }
+
+      .tarjeta-resultado h4 {
+        margin: 4px 0 8px 0;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>PANEL DE VIDEOJUEGOS</h1>
+    <p>Busca juegos en la base de datos de RAWG</p>
+
+    <div class="buscador">
+      <input type="text" id="input-busqueda" placeholder="Ej: Half-Life, Touhou, CS..." />
+      <button onclick="buscarJuego()">Buscar</button>
+    </div>
+
+    <!-- Contenedor donde se insertan los juegos encontrados -->
+    <div id="contenedor-resultados" class="resultados"></div>
+
+    <script>
+      // TU CLAVE DE RAWG CONFIGURADA:
+      const RAWG_API_KEY = "b2909f01a7ee4919b8a3156ceead3b55";
+
+      async function buscarJuego() {
+        const query = document.getElementById("input-busqueda").value.trim();
+        const contenedor = document.getElementById("contenedor-resultados");
+
+        if (!query) return;
+
+        contenedor.innerHTML = "<p>Buscando en RAWG...</p>";
+
+        try {
+          const url = `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${encodeURIComponent(query)}&page_size=6`;
+          const respuesta = await fetch(url);
+          const datos = await respuesta.json();
+
+          contenedor.innerHTML = "";
+
+          if (!datos.results || datos.results.length === 0) {
+            contenedor.innerHTML = "<p>No se encontraron resultados.</p>";
+            return;
+          }
+
+          datos.results.forEach(item => {
+            const titulo = item.name;
+            const imagen = item.background_image || "https://via.placeholder.com/150x180";
+
+            const card = document.createElement("div");
+            card.className = "tarjeta-resultado";
+            card.innerHTML = `
+              <img src="${imagen}" alt="${titulo}" />
+              <h4>${titulo}</h4>
+              <button onclick="copiarHTMLJuego('${imagen}', '${titulo.replace(/'/g, "\\'")}')">Copiar HTML</button>
+            `;
+            contenedor.appendChild(card);
+          });
+        } catch (error) {
+          console.error(error);
+          contenedor.innerHTML = "<p>Error al conectar con la API de RAWG.</p>";
+        }
+      }
+
+      function copiarHTMLJuego(imagenUrl, tituloJuego) {
+        const codigo = `<div class="caja">\n  <div class="marco">\n    <img src="${imagenUrl}" alt="${tituloJuego}" />\n  </div>\n  <h3>${tituloJuego}</h3>\n  <span>Completado</span>\n</div>`;
+        navigator.clipboard.writeText(codigo);
+        alert("¡Copiado! Pégalo dentro del archivo juegos.html");
+      }
+    </script>
+  </body>
+</html>
