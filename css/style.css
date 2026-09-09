@@ -1,6 +1,57 @@
-h1 {
-    color: #00ff11;
-    font-size: 24px;
-    line-height: 1.5;
-    margin-bottom: 15px;
+body {
+    background-color: #faffc2;
+    background-size: cover;
+    background-position: center;
+
+    h1 {
+        color: #2e2d2d;
+        font-family: 'MS Gothic', sans-serif;
+        font-size: 48px;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px #0000001e;
+        text-align: center;
+        margin-top: 50px;
+        font-weight: bold;
+    }
+
+    .carrusel {
+        max-height: 400px;
+        width: auto;
+    }
+
+    p {
+        color: #4a4848;
+        font-family: 'MS Gothic', sans-serif;
+        font-size: 18px;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .card {
+        margin: 20px auto;
+        max-width: 300px;
+        text-align: center;
+    }
+
+    .card img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .cardcoso {
+        display: flex;
+        justify-content: center;
+        gap: px;
+        flex-wrap: wrap;
+    }
+
+    .botoncontenedor {
+        display: block;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
 }
