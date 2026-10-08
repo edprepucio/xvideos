@@ -17,20 +17,21 @@
                         function calcular(operacion) {
                 let num1 = parseFloat(document.getElementById("num1").value);
                 let num2 = parseFloat(document.getElementById("num2").value);
+                let num3 = parseFloat(document.getElementById("num3").value);
                 let resultado;
 
                 switch(operacion) {
                     case '+':
-                        resultado = num1 + num2;
+                        resultado = num1 + num2 + num3;
                         break;
                     case '-':
-                        resultado = num1 - num2;
+                        resultado = num1 - num2 - num3;
                         break;
                     case '*':
-                        resultado = num1 * num2;
+                        resultado = num1 * num2 * num3;
                         break;
                     case '/':
-                        resultado = num1 / num2;
+                        resultado = num1 / num2 / num3;
                         break;
                 }
 
