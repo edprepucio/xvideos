@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheet</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <h1>Datos desde Google Sheets</h1>
+    <table id="tabla" border="1"></table>
+
+    <script>
+        const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT2mMP00qEWoAyAXJVR1qvTpdvSVrda0IWBrnWAjiif3dYJolVQnwW9bI2NG7dCQkw_AxPtFroLo2Jr/pub?gid=0&single=true&output=csv";
+
+        fetch(url)
+            .then(res => res.text())
+            .then(texto => {
+                const filas = texto.trim().split("\n").map(f => f.trim().split(","));
+                const tabla = document.getElementById("tabla");
+
+                filas.forEach((fila, i) => {
+                    const tr = document.createElement("tr");
+                    fila.forEach(celda => {
+                        const td = document.createElement(i === 0 ? "th" : "td");
+                        td.textContent = celda;
+                        tr.appendChild(td);
+                    });
+                    tabla.appendChild(tr);
+                });
+            })
+            .catch(err => console.error("Error al cargar la hoja:", err));
+    </script>
+</body>
+</html>

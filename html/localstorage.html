@@ -1,0 +1,42 @@
+    <head>
+        <title>:3</title>
+        <link rel="icon" href="../img/pngegg.png" type="image/x-icon"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="stylesheet" href="../css/style.css">
+
+            <input id="tarea" placeholder="Escribir una tarea">
+    <button onclick="guardar()">Guardar</button>
+    <ul id="lista"></ul>
+
+    <script>
+        function guardar () {
+            let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+            tareas.push(document.getElementById("tarea").value);
+            localStorage.setItem("tareas", JSON.stringify(tareas));
+            document.getElementById("tarea").value = "";
+            mostrar();
+        }
+
+        function mostrar () {
+            let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+            document.getElementById("lista").innerHTML = tareas.map(tarea => `<li>${tarea}</li>`);
+        }
+
+        mostrar();
+    </script>
+
+    <ul id="lista"></ul>
+    <script>
+        fetch("../js/datos.json")
+        .then(res => res.json())
+        .then(personas => {
+            let html = personas.map(p => `<li>${p.nombre} ${p.apellido}, ${p.edad} años, vive en ${p.ciudad}</li>`).join("");
+            document.getElementById("lista").innerHTML = html;
+
+        });
+    </script>
+
+</head>
+<body>
+</body>
+</html>
