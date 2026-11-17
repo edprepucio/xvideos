@@ -1,8 +1,7 @@
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwgEWiLuGtxBaChy5CVngSZI6dND4onkeloDSbqFa3O9a5wIoRd2sU_tsFaPk9OJpUl/exec";
+const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 $(document).ready(function () {
-    const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const telefonoRegex = /^(\+?56)?\s?9\s?\d{4}\s?\d{4}$/;
 
     function valor(selector) {
         return ($(selector).val() || "").toString().trim();
@@ -26,10 +25,10 @@ $(document).ready(function () {
             if (!mailRegex.test(v)) return "Por favor, ingresa un correo electrónico válido.";
             return "";
         }),
-
         telefono: () => validar("#telefono", "#telefonoError", v => {
             if (v === "") return "Por favor, ingresa tu teléfono.";
-            if (!telefonoRegex.test(v)) return "Ingresa un teléfono válido (ej: +56 9 1234 5678).";
+            const limpio = v.replace(/[\s\-()]/g, "");
+            if (!/^(\+?56)?9\d{8}$/.test(limpio)) return "Ingresa un teléfono válido (ej: +56 9 1234 5678 o 912345678).";
             return "";
         }),
 

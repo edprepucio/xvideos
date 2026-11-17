@@ -38,3 +38,7 @@
                 document.getElementById("resultado").textContent = "Resultado: " + resultado;
             }
             
+            function telefonoValido(valor) {
+                const limpio = valor.replace(/[\s\-()]/g, "");
+                return /^(\+?56)?9\d{8}$/.test(limpio);
+            };
