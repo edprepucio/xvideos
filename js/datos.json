@@ -1,7 +1,0 @@
-[
-    {"nombre":"Juan","apellido":"Pérez","edad":30,"ciudad":"Madrid"},
-    {"nombre":"María","apellido":"García","edad":25,"ciudad":"Barcelona"},
-    {"nombre":"Pedro","apellido":"López","edad":35,"ciudad":"Valencia"},
-    {"nombre":"Ana","apellido":"Martínez","edad":28,"ciudad":"Sevilla"},
-    {"nombre":"Luis","apellido":"Sánchez","edad":40,"ciudad":"Bilbao"}
-]
